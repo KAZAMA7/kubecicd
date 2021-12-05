@@ -3,6 +3,7 @@ pipeline {
     imagename = "kazama7/nginx1"
     registryCredential = 'dockerhub'
     dockerImage = ''
+    tag = '12.3'
   }
   agent any
   stages {
@@ -23,7 +24,7 @@ pipeline {
       steps{
         script {
           docker.withRegistry( '', registryCredential ) {
-            dockerImage.push("$BUILD_NUMBER")
+            dockerImage.push("$tag")
              dockerImage.push('latest')
 
           }
@@ -32,7 +33,7 @@ pipeline {
     }
     stage('Remove Unused docker image') {
       steps{
-        sh "docker rmi $imagename:$BUILD_NUMBER"
+        sh "docker rmi $imagename:$tag"
          sh "docker rmi $imagename:latest"
 
       }
